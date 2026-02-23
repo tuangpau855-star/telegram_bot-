@@ -1,3 +1,4 @@
+import os  # ဒါအပေါ်ဆုံးမှာထည့်
 import logging
 import random
 from datetime import time
@@ -21,7 +22,7 @@ NICKNAMES = [
     "ကိုကို့ကလေးလေးရေ",
     "ကို့အာလူးလေး",
     "သမီးရေ",
-    "ဖေ့သီးရေ"
+    "ဖေ့သမီးရေ"
 ]
 
 def get_random_name():
@@ -77,8 +78,14 @@ async def show_names(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 def main():
-    # ဒီနေရာမှာ ခင်ဗျားရဲ့ Token ထည့်ပါ
-    application = Application.builder().token('6741485363:AAEiD4ms0rwhi7K3ZJfm4Gj_KjPDWiNiaVg').build()
+    # Environment Variable ကနေ Token ကိုယူမယ်
+    token = os.environ.get('6741485363:AAEiD4ms0rwhi7K3ZJfm4Gj_KjPDWiNiaVg')
+    
+    if not token:
+        print("ERROR: BOT_TOKEN not found in environment variables!")
+        return
+    
+    application = Application.builder().token(token).build()
 
     application.add_handler(CommandHandler('start', start))
     application.add_handler(CommandHandler('setjobs', set_daily_jobs))
